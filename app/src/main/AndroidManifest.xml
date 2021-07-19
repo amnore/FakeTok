@@ -9,6 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.FakeTok">
+        <activity android:name=".MyVideosActivity">
+        </activity>
         <activity android:name=".CaptureActivity">
         </activity>
         <activity
