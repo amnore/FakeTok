@@ -1,14 +1,11 @@
 package com.example.faketok
 
-import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.view.MotionEvent
-import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
+import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.faketok.util.Constant
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -24,13 +21,17 @@ class MainActivity : AppCompatActivity() {
 
         fullscreenContent = findViewById(R.id.fullscreen_content)
         fullscreenContent.setOnClickListener { toggle() }
+
+        Log.d(Constant.APP, "MainActivity, onCreate finishes")
     }
 
     private fun toggle() {
-        if(supportActionBar?.isShowing() == true) {
+        if (supportActionBar?.isShowing == true) {
             supportActionBar?.hide()
+            Log.d(Constant.APP, "MainActivity, now the action bar is hidden")
         } else {
             supportActionBar?.show()
+            Log.d(Constant.APP, "MainActivity, now the action bar shows up")
         }
     }
 

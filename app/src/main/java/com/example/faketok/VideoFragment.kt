@@ -2,25 +2,26 @@ package com.example.faketok
 
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.io.Serializable
+import androidx.fragment.app.Fragment
+import com.example.faketok.util.Constant
 import kotlin.properties.Delegates
 
 enum class ArgName(val key: String) {
-    ARG_NICKNAME("nickname"), ARG_DESCRIPTION("description"), ARG_LIKECOUNT("likeCount"), ARG_URI("uri")
+    ARG_NICKNAME("nickname"),
+    ARG_DESCRIPTION("description"),
+    ARG_LIKECOUNT("likeCount"),
+    ARG_URI("uri")
 }
 
 /**
- * A simple [Fragment] subclass.
- * Use the [VideoFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Should we use ViewModel? Everytime we load this fragment we must fetch the same data
  */
 class VideoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
     lateinit var nickname: String
     lateinit var description: String
     var likeCount by Delegates.notNull<Long>()
@@ -28,19 +29,21 @@ class VideoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             nickname = it.getString(ArgName.ARG_NICKNAME.key)!!
             description = it.getString(ArgName.ARG_DESCRIPTION.key)!!
             likeCount = it.getString(ArgName.ARG_LIKECOUNT.key)!!.toLong()
             uri = Uri.parse(it.getString(ArgName.ARG_URI.key)!!)
         }
+
+        Log.d(Constant.APP, "VideoFragment, onCreate finishes")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_video, container, false)
     }
 
