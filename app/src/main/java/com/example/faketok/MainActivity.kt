@@ -91,7 +91,8 @@ private data class VideoInfo(
     val nickname: String,
     val description: String,
     val likecount: Long,
-    val avatar: UriWrapper
+    val avatar: UriWrapper,
+    val thumbnails: UriWrapper
 )
 
 @Serializable(with = UriSerializer::class)
