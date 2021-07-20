@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.faketok.util.Constant
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.json.*
@@ -27,6 +26,8 @@ import kotlinx.serialization.encoding.Encoder
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
+
+private const val api = "https://beiyou.bytedance.com/api/invoke/video/invoke/video"
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var pager: ViewPager2
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 install(JsonFeature)
             }
             val response = client.request<HttpResponse> {
-                url(Constant.API)
+                url(api)
             }.receive<List<VideoInfo>>()
 
             client.close()
