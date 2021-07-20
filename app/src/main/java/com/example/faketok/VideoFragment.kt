@@ -10,11 +10,9 @@ import androidx.fragment.app.Fragment
 import com.example.faketok.util.Constant
 import kotlin.properties.Delegates
 
-enum class ArgName(val key: String) {
-    ARG_NICKNAME("nickname"),
-    ARG_DESCRIPTION("description"),
-    ARG_LIKECOUNT("likeCount"),
-    ARG_URI("uri")
+
+enum class ArgName {
+    ARG_NICKNAME, ARG_DESCRIPTION, ARG_LIKECOUNT, ARG_URI
 }
 
 /**
@@ -31,10 +29,10 @@ class VideoFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            nickname = it.getString(ArgName.ARG_NICKNAME.key)!!
-            description = it.getString(ArgName.ARG_DESCRIPTION.key)!!
-            likeCount = it.getString(ArgName.ARG_LIKECOUNT.key)!!.toLong()
-            uri = Uri.parse(it.getString(ArgName.ARG_URI.key)!!)
+            nickname = it.getString(ArgName.ARG_NICKNAME.toString())!!
+            description = it.getString(ArgName.ARG_DESCRIPTION.toString())!!
+            likeCount = it.getString(ArgName.ARG_LIKECOUNT.toString())!!.toLong()
+            uri = Uri.parse(it.getString(ArgName.ARG_URI.toString())!!)
         }
 
         Log.d(Constant.APP, "VideoFragment, onCreate finishes")
