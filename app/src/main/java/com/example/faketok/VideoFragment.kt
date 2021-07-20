@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.faketok.util.Constant
 import kotlin.properties.Delegates
@@ -43,6 +44,14 @@ class VideoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_video, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val textView: TextView = view.findViewById(R.id.text_demo)
+        textView.text = "$nickname $description $likeCount $uri"
+
+        Log.d(Constant.APP, "VideoFragment, onViewCreated finishes, text is ${textView.text}")
     }
 
     companion object {
