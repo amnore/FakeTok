@@ -72,41 +72,5 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 private class PagerAdapter(ac: AppCompatActivity, val items: List<VideoInfo>) : FragmentStateAdapter(ac) {
     override fun getItemCount(): Int = items.size
 
-    override fun createFragment(position: Int): Fragment {
-        val it = items[position]
-
-        return VideoFragment.newInstance(
-            it.nickname,
-            it.description,
-            it.likecount,
-            it.feedurl.uri
-        )
-    }
-}
-
-@Serializable
-private data class VideoInfo(
-    val _id: String,
-    val feedurl: UriWrapper,
-    val nickname: String,
-    val description: String,
-    val likecount: Long,
-    val avatar: UriWrapper,
-    val thumbnails: UriWrapper
-)
-
-@Serializable(with = UriSerializer::class)
-private class UriWrapper(val uri: Uri)
-
-private class UriSerializer: KSerializer<UriWrapper> {
-    override fun deserialize(decoder: Decoder): UriWrapper{
-        return UriWrapper(Uri.parse(decoder.decodeString()))
-    }
-
-    override val descriptor: SerialDescriptor
-        get() = PrimitiveSerialDescriptor("UriWrapper", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: UriWrapper) {
-        encoder.encodeString(value.uri.toString())
-    }
+    override fun createFragment(position: Int): Fragment = VideoFragment.newInstance(items[position])
 }

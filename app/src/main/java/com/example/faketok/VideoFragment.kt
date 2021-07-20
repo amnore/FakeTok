@@ -46,18 +46,7 @@ class VideoFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(nickname: String, description: String, likeCount: Long, uri: Uri) =
-            VideoFragment().apply {
-                arguments = Bundle().apply {
-                    arrayOf(
-                        Pair(ArgName.ARG_DESCRIPTION, description),
-                        Pair(ArgName.ARG_LIKECOUNT, likeCount),
-                        Pair(ArgName.ARG_NICKNAME, nickname),
-                        Pair(ArgName.ARG_URI, uri)
-                    ).forEach {
-                        putString(it.first.toString(), it.second.toString())
-                    }
-                }
-            }
+        fun newInstance(info: VideoInfo): VideoFragment =
+            TODO()
     }
 }
