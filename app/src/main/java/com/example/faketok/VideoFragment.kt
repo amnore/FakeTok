@@ -16,9 +16,6 @@ enum class ArgName {
     ARG_NICKNAME, ARG_DESCRIPTION, ARG_LIKECOUNT, ARG_URI
 }
 
-/**
- * Should we use ViewModel? Everytime we load this fragment we must fetch the same data
- */
 class VideoFragment : Fragment() {
 
     lateinit var nickname: String
@@ -49,7 +46,7 @@ class VideoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView: TextView = view.findViewById(R.id.text_demo)
-        textView.text = "$nickname $description $likeCount $uri"
+        textView.text = "$nickname, $description, $likeCount, $uri"
 
         Log.d(Constant.APP, "VideoFragment, onViewCreated finishes, text is ${textView.text}")
     }
