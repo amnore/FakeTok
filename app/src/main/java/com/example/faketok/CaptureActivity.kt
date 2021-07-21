@@ -28,6 +28,7 @@ class CaptureActivity : AppCompatActivity() {
             controler.setText(R.string.endVideo)
         }else{
             videoRecorder?.stopRecording()
+            controler.setText(R.string.startVideo)
         }
     }
 
