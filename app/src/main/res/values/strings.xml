@@ -4,4 +4,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="startVideo">开始录制</string>
+    <string name="endVideo">结束录制</string>
 </resources>
