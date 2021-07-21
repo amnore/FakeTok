@@ -1,5 +1,6 @@
 package com.example.faketok
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.SurfaceView
 import android.widget.Button
@@ -19,6 +20,8 @@ class CaptureActivity : AppCompatActivity() {
         video=findViewById(R.id.videoRecorder)
         controler=findViewById(R.id.VideoController)
         videoRecorder= VideoRecorder()
+        videoRecorder?.startRecording(video,this)
+        controler.setText(R.string.endVideo)
         controler.setOnClickListener{startRecording()}
     }
 
@@ -29,6 +32,8 @@ class CaptureActivity : AppCompatActivity() {
         }else{
             videoRecorder?.stopRecording()
             controler.setText(R.string.startVideo)
+            startActivity(Intent(this,MyVideosActivity::class.java))
+            finish()
         }
     }
 
