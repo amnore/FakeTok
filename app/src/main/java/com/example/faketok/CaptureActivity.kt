@@ -20,8 +20,6 @@ class CaptureActivity : AppCompatActivity() {
         video=findViewById(R.id.videoRecorder)
         controler=findViewById(R.id.VideoController)
         videoRecorder= VideoRecorder()
-        videoRecorder?.startRecording(video,this)
-        controler.setText(R.string.endVideo)
         controler.setOnClickListener{startRecording()}
     }
 

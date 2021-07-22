@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/gotoCaptureActivity"
             android:layout_gravity="center|bottom"
+            android:text="开始录制"
             android:layout_margin="10dp"/>
 
 </FrameLayout>
