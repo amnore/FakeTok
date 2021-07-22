@@ -7,4 +7,5 @@
 
     <string name="startVideo">开始录制</string>
     <string name="endVideo">结束录制</string>
+    <string name="video_ready">Ready</string>
 </resources>

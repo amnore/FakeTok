@@ -1,15 +1,18 @@
 package com.example.faketok
 
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.faketok.util.Constant
+import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
+import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import kotlin.properties.Delegates
 
 
@@ -17,21 +20,27 @@ enum class ArgName {
     ARG_NICKNAME, ARG_DESCRIPTION, ARG_LIKECOUNT, ARG_URI, ARG_IMAGE
 }
 
-class VideoFragment : Fragment(), MediaPlayer.OnPreparedListener {
+// frame layout 中放置视频播放空间和图片控件，frame 本身充当监听器
+class VideoFragment : Fragment() {
 
-    private lateinit var progressBar: ProgressBar
+    // 控件
     private lateinit var imageView: ImageView
     private lateinit var nicknameView: TextView
     private lateinit var desView: TextView
     private lateinit var likeCountView: TextView
-    private lateinit var videoView: VideoView
+    private lateinit var videoView: StandardGSYVideoPlayer
 
-    lateinit var nickname: String
-    lateinit var description: String
-    var likeCount by Delegates.notNull<Long>()
-    lateinit var uri: Uri
-    lateinit var image: Uri
+    // bundle 传参
+    private lateinit var nickname: String
+    private lateinit var description: String
+    private var likeCount by Delegates.notNull<Long>()
+    private lateinit var uri: Uri
+    private lateinit var image: Uri
 
+    // video 状态, 用户指令
+    private var isActivated: Boolean = false
+
+    // 手势控制器
     private var gesture: GestureDetector = GestureDetector(context,
         object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -59,7 +68,6 @@ class VideoFragment : Fragment(), MediaPlayer.OnPreparedListener {
         savedInstanceState: Bundle?
     ): View? {
         val view: View? = inflater.inflate(R.layout.fragment_video, container, false)
-        this.initProgress(view)
         this.initImage(view)
         this.initTexts(view)
         this.setVideo(view)
@@ -67,36 +75,44 @@ class VideoFragment : Fragment(), MediaPlayer.OnPreparedListener {
     }
 
     private fun setVideo(view: View?) {
-        videoView = view?.findViewById(R.id.video)!!
+        videoView = view?.findViewById(R.id.player)!!
+
+        val gsyVideoOption = GSYVideoOptionBuilder()
+        gsyVideoOption.setVideoAllCallBack(object : GSYSampleCallBack() {
+            override fun onPrepared(url: String?, vararg objects: Any?) {
+                super.onPrepared(url, *objects)
+                Log.d(Constant.APP, "VideoFragment, video ready, $isActivated")
+                if (!isActivated) videoView.onVideoPause()
+            }
+
+            override fun onClickBlank(url: String?, vararg objects: Any?) {
+                Log.d(Constant.APP, "VideoFragment, onClickBlank, $isActivated")
+                if (!isActivated) videoView.onVideoResume(false)
+                else videoView.onVideoPause()
+                isActivated = !isActivated
+            }
+        }).build(videoView)
 
         videoView.apply {
             contentDescription = "$nickname, $description, $likeCount, $uri, $image"
+            // 初始设为不可见 在点击 image 之后可见
             visibility = View.GONE
-//            setVideoURI(Uri.parse("android.resource://${context?.packageName}/${R.raw.mihoyo}"))
-//            setVideoURI(uri)
-            setVideoURI(Uri.parse("https://teachingoss.applysquare.com/mp4MultibitrateIn42/2020/03/06/13/24/16/904/o_1e2n4qegoo5r1a044ub4vha2ph.mp4/960.mp4?OSSAccessKeyId=LTAI5tRvp4vmhaFUwAAcBybz&Expires=1626960174&Signature=upnogak1Q9YBwauTN3oVbJytdpA%3D"))
+            // 设置 uri
+            setUp(
+                uri.toString(),
+                true,
+                "cur"
+            )
+            // 标题不可见
+            titleTextView.visibility = View.GONE
+            // 返回按钮不可见
+            backButton.visibility = View.GONE
+            // 循环
+            isLooping = true
+
             Log.d(Constant.APP, "VideoFragment, $uri")
-            setOnPreparedListener(this@VideoFragment)
-
-            setOnClickListener {
-                Log.d(Constant.APP, "VideoFragment, VideoView click")
-                if (videoView.isPlaying) videoView.pause()
-                else videoView.start()
-            }
-
+            startPlayLogic()
         }
-
-        imageView.setOnClickListener {
-            Log.d(Constant.APP, "VideoFragment, ImageView click")
-            imageView.visibility = View.GONE
-            if (videoView.isPlaying) videoView.pause()
-            else videoView.start()
-        }
-    }
-
-    private fun initProgress(view: View?) {
-        progressBar = view?.findViewById(R.id.progress)!!
-        progressBar.visibility = View.VISIBLE
     }
 
     private fun initImage(view: View?) {
@@ -105,6 +121,14 @@ class VideoFragment : Fragment(), MediaPlayer.OnPreparedListener {
             Glide.with(it).load(image).transition(withCrossFade()).into(imageView)
         }
         imageView.visibility = View.VISIBLE
+        // 一次性监听器
+        imageView.setOnClickListener {
+            imageView.visibility = View.GONE
+            videoView.visibility = View.VISIBLE
+            isActivated = true
+            videoView.startPlayLogic()
+            Log.d(Constant.APP, "VideoFragment, ImageView click, $isActivated")
+        }
     }
 
     private fun initTexts(view: View?) {
@@ -114,14 +138,6 @@ class VideoFragment : Fragment(), MediaPlayer.OnPreparedListener {
         desView.text = description
         likeCountView = view.findViewById(R.id.like_count)!!
         likeCountView.text = likeCount.toString()
-    }
-
-    override fun onPrepared(mp: MediaPlayer?) {
-        Log.d(Constant.APP, "VideoFragment, onPrepared")
-        progressBar.visibility = View.GONE
-        videoView.visibility = View.VISIBLE
-        mp?.start()
-        mp?.pause()
     }
 
     companion object {
