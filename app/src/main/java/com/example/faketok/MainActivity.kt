@@ -1,10 +1,10 @@
 package com.example.faketok
 
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -12,6 +12,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
+import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,46 +73,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 }
 
-private class PagerAdapter(ac: AppCompatActivity, val items: List<VideoInfo>) :
-    FragmentStateAdapter(ac) {
+private class PagerAdapter(ac: AppCompatActivity, val items: List<VideoInfo>) : FragmentStateAdapter(ac) {
     override fun getItemCount(): Int = items.size
 
-    override fun createFragment(position: Int): Fragment {
-        val it = items[position]
-
-        return VideoFragment.newInstance(
-            it.nickname,
-            it.description,
-            it.likecount,
-            it.feedurl.uri,
-            it.thumbnails.uri
-        )
-    }
-}
-
-@Serializable
-private data class VideoInfo(
-    val _id: String,
-    val feedurl: UriWrapper,
-    val nickname: String,
-    val description: String,
-    val likecount: Long,
-    val avatar: UriWrapper,
-    val thumbnails: UriWrapper
-)
-
-@Serializable(with = UriSerializer::class)
-private class UriWrapper(val uri: Uri)
-
-private class UriSerializer : KSerializer<UriWrapper> {
-    override fun deserialize(decoder: Decoder): UriWrapper {
-        return UriWrapper(Uri.parse(decoder.decodeString()))
-    }
-
-    override val descriptor: SerialDescriptor
-        get() = PrimitiveSerialDescriptor("UriWrapper", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: UriWrapper) {
-        encoder.encodeString(value.uri.toString())
-    }
+    override fun createFragment(position: Int): Fragment = VideoFragment.newInstance(items[position])
 }
