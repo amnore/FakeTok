@@ -32,7 +32,7 @@ class MyVideosActivity : AppCompatActivity() {
         findViewById<Button>(R.id.rename_video).setOnClickListener{renameVideo()}
     }
 
-    private fun renameVideo(v:Button) {
+    private fun renameVideo() {
         var view:View
     }
 
