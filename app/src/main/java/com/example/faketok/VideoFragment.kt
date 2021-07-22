@@ -143,20 +143,16 @@ class VideoFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(
-            nickname: String,
-            description: String,
-            likeCount: Long,
-            uri: Uri,
-            image: Uri
+            info: VideoInfo
         ) =
             VideoFragment().apply {
                 arguments = Bundle().apply {
                     arrayOf(
-                        Pair(ArgName.ARG_DESCRIPTION, description),
-                        Pair(ArgName.ARG_LIKECOUNT, likeCount),
-                        Pair(ArgName.ARG_NICKNAME, nickname),
-                        Pair(ArgName.ARG_URI, uri),
-                        Pair(ArgName.ARG_IMAGE, image)
+                        Pair(ArgName.ARG_DESCRIPTION, info.description),
+                        Pair(ArgName.ARG_LIKECOUNT, info.likecount),
+                        Pair(ArgName.ARG_NICKNAME, info.nickname),
+                        Pair(ArgName.ARG_URI, info.feedurl),
+                        Pair(ArgName.ARG_IMAGE, info.thumbnails)
                     ).forEach {
                         putString(it.first.toString(), it.second.toString())
                     }

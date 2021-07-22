@@ -27,9 +27,6 @@ class MyVideosActivity : AppCompatActivity() {
         listview=findViewById(R.id.list_video)
 
         initFileList()
-
-        findViewById<Button>(R.id.delete_video).setOnClickListener{deleteVideo()}
-        findViewById<Button>(R.id.rename_video).setOnClickListener{renameVideo()}
     }
 
     private fun renameVideo() {

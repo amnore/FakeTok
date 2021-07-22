@@ -55,6 +55,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             startActivity(Intent(this, CaptureActivity::class.java))
         }
 
+        findViewById<Button>(R.id.gotoMyVideos).setOnClickListener {
+            startActivity(Intent(this, MyVideosActivity::class.java))
+        }
+
         launch {
             val client = HttpClient() {
                 install(JsonFeature)
