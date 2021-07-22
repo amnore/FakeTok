@@ -31,6 +31,7 @@ import kotlin.coroutines.CoroutineContext
 private val api = "https://beiyou.bytedance.com/api/invoke/video/invoke/video"
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
+
     private lateinit var pager: ViewPager2
     private lateinit var videos: MutableList<VideoInfo>
 
@@ -43,7 +44,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         supportActionBar?.hide()
 
         videos = Collections.synchronizedList(ArrayList())
+
         val adapter = PagerAdapter(this, videos)
+
         pager = findViewById<ViewPager2?>(R.id.pager).apply {
             setAdapter(adapter)
         }
@@ -62,6 +65,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             client.close()
             videos.addAll(response)
+
             runOnUiThread {
                 adapter.notifyDataSetChanged()
             }
