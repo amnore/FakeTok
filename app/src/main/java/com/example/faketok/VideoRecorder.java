@@ -79,8 +79,6 @@ public class VideoRecorder {
     }
     public void stopRecording(){
         isRecording=false;
-        mediaRecorder.stop();
-        mediaRecorder.release();
         if (mediaRecorder != null) {
             try {
                 mediaRecorder.stop();
