@@ -34,7 +34,6 @@ class MyVideosActivity : AppCompatActivity() {
 
     private fun renameVideo(v:Button) {
         var view:View
-        v.
     }
 
     private fun deleteVideo() {

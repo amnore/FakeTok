@@ -30,7 +30,6 @@ class CaptureActivity : AppCompatActivity() {
         }else{
             videoRecorder?.stopRecording()
             controler.setText(R.string.startVideo)
-            startActivity(Intent(this,MyVideosActivity::class.java))
             finish()
         }
     }
